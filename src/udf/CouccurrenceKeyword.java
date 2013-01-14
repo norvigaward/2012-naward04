@@ -274,14 +274,13 @@ public class CouccurrenceKeyword extends EvalFunc<DataBag> {
 
 	@Override
 	public DataBag exec(Tuple tuple) throws IOException {
-		if (tuple == null || tuple.size() == 0)
+		if (tuple == null || tuple.size() < 3)
 			return null;
 		try {
 			String webpage = (String) tuple.get(2);
 
 			if (webpage == null) {
-				throw new IOException("The webpage is null. Size tuple="
-						+ tuple.size() + " tuple=" + tuple.toString());
+				throw new IOException("This parameter should not be null");
 			}
 
 			// Returns a bag with all the words that have appeared at least one
