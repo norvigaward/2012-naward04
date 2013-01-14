@@ -14,7 +14,7 @@ IN = LOAD '/data/public/common-crawl/parse-output/' using org.commoncrawl.pig.Ar
 LIST = LOAD 'list' as (domain:chararray);
 
 WEBSITES = FOREACH IN GENERATE SUBSTRING(url,0,INDEXOF(url,'/',8)+1) as dom, url, statuscode, type, length, title, links, words;
-
+	
 J = JOIN WEBSITES by dom, LIST BY domain using 'replicated';
 
 STORE J INTO 'foundations_pages.gz';
