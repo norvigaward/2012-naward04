@@ -13,7 +13,7 @@ SET default_parallel 256;
 LIST_FOUNDATIONS = LOAD 'list' as (domain:chararray);
 
 IN = LOAD '/data/public/common-crawl/parse-output/' using org.commoncrawl.pig.ArcLoader() as (date, length:int, type:chararray, statuscode:int, ipaddress:chararray, url:chararray, title:chararray, links:chararray, words:chararray);
-IN = FILTER IN BY statuscode == 200 and title != 'NOT_PARSED' and words != 'CONVERSION_ERRORS' and type == 'text/html';
+IN = FILTER IN BY statuscode == 200 and title != 'NOT_PARSED' and title != 'CONVERSION_ERRORS' and type == 'text/html';
 IN2 = FOREACH IN GENERATE SUBSTRING(url,0,INDEXOF(url,'/',8)+1) as domain, url, links, words;
 
 -- Retrieve foundation pages
