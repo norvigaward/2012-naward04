@@ -59,9 +59,9 @@ public class ArcParser extends LoadFunc {
 
 			// If the page is a html page then parse it
 			if (type != null && type.equals("text/html")) {
-				value.getHttpResponse().getEntity().
+
 			} else {
-				
+
 			}
 
 			return t;
