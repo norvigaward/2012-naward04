@@ -6,6 +6,7 @@ REGISTER ../commoncrawl-examples/lib/htmlcleaner-2.2.jar
 REGISTER ../commoncrawl-examples/commoncrawl-examples-1.0.1.jar
 REGISTER ../award.jar
 
+SET mapred.input.pathFilter.class org.commoncrawl.pig.FilterGzip;
 SET job.name "JaccardCoefficient";
 SET default_parallel 256;
 

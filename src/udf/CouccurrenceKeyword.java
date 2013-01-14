@@ -291,6 +291,7 @@ public class CouccurrenceKeyword extends EvalFunc<DataBag> {
 
 			return output;
 		} catch (Exception e) {
+			log.error(e);
 			throw new IOException("Caught exception processing input row ", e);
 		}
 	}
