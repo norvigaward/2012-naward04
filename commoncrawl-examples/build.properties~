@@ -1,7 +1,0 @@
-#
-# Common Crawl Examples - Build Configuration Parameters
-#
-
-# Path to Hadoop and Pig libraries
-hadoop.path=../../hadoop_sara/hadoop-0.20
-pig.path=../../hadoop_sara/pig-0.10.0

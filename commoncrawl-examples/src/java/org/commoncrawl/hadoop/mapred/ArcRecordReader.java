@@ -5,7 +5,7 @@ import java.io.IOException;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataInputStream;
-import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.*;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.InputSplit;
@@ -27,8 +27,8 @@ public class ArcRecordReader
 
   private static final Logger LOG = Logger.getLogger(ArcRecordReader.class);
 
-  private FSDataInputStream         _fsin;
-  private GzipCompressorInputStream _gzip;
+  private FSDataInputStream         _fsin = null;
+  private GzipCompressorInputStream _gzip = null;
   private long                      _fileLength;
   private Text                      _key;
   private ArcRecord                 _value;
@@ -54,6 +54,11 @@ public class ArcRecordReader
     final Path file = split.getPath();
 
     FileSystem fs = file.getFileSystem(context.getConfiguration());
+
+    FileStatus status = fs.getFileStatus(file);
+    if (status.isDir()) {
+	return;
+    }
 
     this._fsin = fs.open(file);
 
@@ -102,6 +107,9 @@ public class ArcRecordReader
    * 
    */
   public synchronized boolean nextKeyValue() throws IOException, InterruptedException {
+
+	  if(this._gzip == null)
+	      return false;
 
     boolean isValid = true;
     

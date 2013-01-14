@@ -25,6 +25,9 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+
+import org.htmlcleaner.*;
+
 // Hadoop classes
 // Apache log4j classes
 // Apache HTTP Components classes
@@ -547,6 +550,52 @@ public class ArcRecord
 
     // parse the content using the derived charset and the URL from the ARC header
     return Jsoup.parse(this._httpResponse.getEntity().getContent(), charset, this._url);
+  }
+
+  public TagNode getParsedHTML2()
+      throws IOException {
+
+    if (this._url == null) {
+      LOG.error("Unable to parse HTML: URL from ARC header has not been set");
+      return null;
+    }
+
+    // if response has not been parsed yet, this parses it
+    try {
+      this.getHttpResponse();
+    }
+    catch (HttpException ex) {
+      LOG.error("Unable to parse HTML: Exception during HTTP response parsing"); return null;
+    }
+
+    if (this._httpResponse == null) {
+      LOG.error("Unable to parse HTML: Exception during HTTP response parsing"); return null;
+    }
+
+    if (this._httpResponse.getEntity() == null) {
+      LOG.error("Unable to parse HTML: No HTTP response entity found"); return null;
+    }
+
+    if (!this._contentType.toLowerCase().contains("html")) {
+      LOG.warn("Unable to parse HTML: Content is not HTML"); return null;
+    }
+
+    String charset = null;
+
+    try {
+      // Default value returned is "text/plain" with charset of ISO-8859-1.
+      charset = ContentType.getOrDefault(this._httpResponse.getEntity()).getCharset().name();
+    }
+    catch (Throwable ex) {
+
+    }
+
+    // if anything goes wrong, try ISO-8859-1
+    if (charset == null)
+      charset = "ISO-8859-1";
+
+    // parse the content using the derived charset and the URL from the ARC header
+    return new HtmlCleaner().clean(this._httpResponse.getEntity().getContent(), charset);
   }
 }
 
