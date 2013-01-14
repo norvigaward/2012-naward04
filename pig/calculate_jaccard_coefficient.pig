@@ -40,7 +40,7 @@ B = GROUP TF by domain;
 B1 = FOREACH B GENERATE group as domain, COUNT(TF) as count;
 
 -- Calculate the Jaccard Index: C
-IN3 = FOREACH IN2 GENERATE url, domain, words;
+IN3 = FOREACH IN2 GENERATE IN2::url as url, IN2::domain as domain, IN2::words as words;
 C = FOREACH IN3 generate FLATTEN(udf.CouccurrenceKeyword()) as keyword:chararray;
 C1 = GROUP C BY keyword;
 C2 = FOREACH C1 GENERATE group as keyword, COUNT(IN3) as count;
