@@ -279,6 +279,11 @@ public class CouccurrenceKeyword extends EvalFunc<DataBag> {
 		try {
 			String webpage = (String) tuple.get(2);
 
+			if (webpage == null) {
+				throw new IOException("The webpage is null. Size tuple="
+						+ tuple.size() + " tuple=" + tuple.toString());
+			}
+
 			// Returns a bag with all the words that have appeared at least one
 			// in the webpage
 			DataBag output = mBagFactory.newDefaultBag();
