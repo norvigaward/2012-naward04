@@ -66,7 +66,8 @@ public class ArcLoader extends LoadFunc {
 			t.set(4, value.getIpAddress());
 			t.set(5, value.getURL());
 
-			if (contentType != null && contentType.equals("text/html")) {
+			if (contentType != null && contentType.equals("text/html")
+					&& contentLength < 400000) {
 				try {
 					Document doc = value.getParsedHTML();
 					if (doc != null) {
